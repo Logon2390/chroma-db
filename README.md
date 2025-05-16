@@ -21,7 +21,7 @@ The API uses the Chroma vector database to efficiently store and query document 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/chroma-db.git
+git clone https://github.com/logon2390/chroma-db.git
 cd chroma-db
 ```
 
@@ -61,7 +61,7 @@ python -m app.main
 
 Or using uvicorn directly:
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 9000 --reload
+uvicorn app.main:app --port 9000 --reload
 ```
 
 The API will be available at http://localhost:9000
