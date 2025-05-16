@@ -9,14 +9,13 @@ class FileType(str, Enum):
     TXT = "txt"
 
 
-class UploadResponse(BaseModel):
-    """Response model for file upload endpoint"""
-    filename: str
-    file_type: FileType
-    content_length: int
-    vector_id: str
+class StoreDocumentResponse(BaseModel):
+    """Response model for file store endpoint"""
     success: bool
     message: str
+    document_ids: Optional[List[str]] = None
+    error: Optional[str] = None
+    document_count: int = Field(description="Number of chunks processed")
 
 
 class DocumentMetadata(BaseModel):
