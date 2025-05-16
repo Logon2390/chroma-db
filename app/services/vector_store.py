@@ -10,18 +10,7 @@ from app.models.schemas import DocumentMetadata, DocumentChunk, VectorStoreRespo
 
 
 class VectorStore:
-    """Encapsulates vector storage and retrieval functionality using ChromaDB and LangChain.
-    
-    This class is responsible for managing the connection to the ChromaDB vector database
-    and providing methods to store, retrieve, and search documents.
-    """
-    
     def __init__(self, collection_name: str = "documents"):
-        """Initialize the vector store.
-        
-        Args:
-            collection_name: Name of the ChromaDB collection to use.
-        """
         self.collection_name = collection_name
         self.db_path = Path(CHROMA_DB_DIR)
         self.db_path.mkdir(parents=True, exist_ok=True)
@@ -36,16 +25,7 @@ class VectorStore:
             persist_directory=str(self.db_path)
         )
     
-    def add_document(self, text: str, metadata: Dict[str, Any]) -> VectorStoreResponse:
-        """Add a document to the vector store.
-        
-        Args:
-            text: The text content of the document to add.
-            metadata: Metadata associated with the document.
-            
-        Returns:
-            A VectorStoreResponse containing the result of the operation.
-        """
+    def store_document(self, text: str, metadata: Dict[str, Any]) -> VectorStoreResponse:
         try:
             # Generate a unique ID for the document
             doc_id = str(uuid.uuid4())
@@ -109,15 +89,6 @@ class VectorStore:
             )
     
     def search_similar(self, query_text: str, k: int = 5) -> List[DocumentChunk]:
-        """Search for documents similar to the query text.
-        
-        Args:
-            query_text: The text to search for.
-            k: Number of similar documents to return.
-            
-        Returns:
-            A list of DocumentChunk objects representing the most similar documents.
-        """
         results = self.db.similarity_search_with_relevance_scores(query_text, k=k)
         
         # Convert results to DocumentChunk objects
@@ -160,14 +131,6 @@ class VectorStore:
         return documents
     
     def delete_document(self, doc_id: str) -> VectorStoreResponse:
-        """Delete a document from the vector store.
-        
-        Args:
-            doc_id: The ID of the document to delete.
-            
-        Returns:
-            A VectorStoreResponse containing the result of the operation.
-        """
         try:
             self.db.delete([doc_id])
             return VectorStoreResponse(
@@ -182,17 +145,6 @@ class VectorStore:
             )
     
     def get_document(self, doc_id: str) -> Optional[DocumentChunk]:
-        """Retrieve a document from the vector store by ID.
-        
-        Args:
-            doc_id: The ID of the document to retrieve.
-            
-        Returns:
-            A DocumentChunk if found, None otherwise.
-        """
-        # This is a simplified implementation as ChromaDB doesn't have a direct
-        # get_document method. In a production environment, you might use additional
-        # filtering or a separate document store for direct lookups.
         results = self.db.similarity_search(
             query="",  # Empty query to bypass similarity search
             k=100,     # Retrieve a large number to increase chances of finding the document
