@@ -10,8 +10,8 @@ API_HOST = os.getenv("API_HOST", "0.0.0.0")
 API_PORT = int(os.getenv("API_PORT", "9000"))
 
 # Vector Store Settings
-CHROMA_DB_DIR = os.getenv("CHROMA_DB_DIR", "./chroma_db")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2")
+CHROMA_DB_DIR = os.getenv("CHROMA_DB_DIR")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
 
 # Get all config as dictionary
 def get_settings() -> Dict[str, Any]:
